@@ -5,8 +5,8 @@ esp32:
   board: esp32dev
 
 wifi:
-  ssid: "INSERT_HERE"
-  password: "INSERT_HERE"
+  ssid: "ABC-IoT"
+  password: "LF2G-bFxYmMvaHtpn"
 
 captive_portal:
 
@@ -104,6 +104,14 @@ text_sensor:
             args: ['x.c_str()']
         - component.update: epaper_display
 
+  - platform: homeassistant
+    id: departure_1_is_delayed
+    entity_id: sensor.transit_departure_1
+    attribute: is_delayed
+    on_value:
+      then:
+        - component.update: epaper_display
+
   # Departure 2 - minutes and separate line/destination sensors
   - platform: homeassistant
     id: departure_2_minutes
@@ -134,6 +142,14 @@ text_sensor:
             args: ['x.c_str()']
         - component.update: epaper_display
 
+  - platform: homeassistant
+    id: departure_2_is_delayed
+    entity_id: sensor.transit_departure_2
+    attribute: is_delayed
+    on_value:
+      then:
+        - component.update: epaper_display
+
   # Departure 3 - minutes and attributes
   - platform: homeassistant
     id: departure_3_minutes
@@ -154,6 +170,14 @@ text_sensor:
     id: departure_3_destination
     entity_id: sensor.transit_departure_3
     attribute: destination
+    on_value:
+      then:
+        - component.update: epaper_display
+
+  - platform: homeassistant
+    id: departure_3_is_delayed
+    entity_id: sensor.transit_departure_3
+    attribute: is_delayed
     on_value:
       then:
         - component.update: epaper_display
@@ -182,6 +206,14 @@ text_sensor:
       then:
         - component.update: epaper_display
 
+  - platform: homeassistant
+    id: departure_4_is_delayed
+    entity_id: sensor.transit_departure_4
+    attribute: is_delayed
+    on_value:
+      then:
+        - component.update: epaper_display
+
   # Departure 5 - minutes and attributes
   - platform: homeassistant
     id: departure_5_minutes
@@ -202,6 +234,14 @@ text_sensor:
     id: departure_5_destination
     entity_id: sensor.transit_departure_5
     attribute: destination
+    on_value:
+      then:
+        - component.update: epaper_display
+
+  - platform: homeassistant
+    id: departure_5_is_delayed
+    entity_id: sensor.transit_departure_5
+    attribute: is_delayed
     on_value:
       then:
         - component.update: epaper_display
@@ -230,6 +270,14 @@ text_sensor:
       then:
         - component.update: epaper_display
 
+  - platform: homeassistant
+    id: departure_6_is_delayed
+    entity_id: sensor.transit_departure_6
+    attribute: is_delayed
+    on_value:
+      then:
+        - component.update: epaper_display
+
   # Departure 7 - minutes and attributes
   - platform: homeassistant
     id: departure_7_minutes
@@ -250,6 +298,14 @@ text_sensor:
     id: departure_7_destination
     entity_id: sensor.transit_departure_7
     attribute: destination
+    on_value:
+      then:
+        - component.update: epaper_display
+
+  - platform: homeassistant
+    id: departure_7_is_delayed
+    entity_id: sensor.transit_departure_7
+    attribute: is_delayed
     on_value:
       then:
         - component.update: epaper_display
@@ -297,6 +353,12 @@ display:
         
         // Use minutes text as-is (includes !, *, etc)
         it.print(it.get_width() - 5, y_pos, id(font_time), COLOR_ON, TextAlign::CENTER_RIGHT, minutes_text.c_str());
+        
+        // Check if delayed and add vertical line on right side
+        if (id(departure_1_is_delayed).has_state() && id(departure_1_is_delayed).state == "on") {
+          it.line(it.get_width() - 2, y_pos - 8, it.get_width() - 2, y_pos + 6, COLOR_ON);
+        }
+        
         it.line(0, y_pos + 14, it.get_width(), y_pos + 14, COLOR_ON);
       }
       y_pos += 26;
@@ -326,6 +388,12 @@ display:
         
         // Use minutes text as-is (includes !, *, etc)
         it.print(it.get_width() - 5, y_pos, id(font_time), COLOR_ON, TextAlign::CENTER_RIGHT, minutes_text.c_str());
+        
+        // Check if delayed and add vertical line on right side
+        if (id(departure_2_is_delayed).has_state() && id(departure_2_is_delayed).state == "on") {
+          it.line(it.get_width() - 2, y_pos - 8, it.get_width() - 2, y_pos + 6, COLOR_ON);
+        }
+        
         it.line(0, y_pos + 14, it.get_width(), y_pos + 14, COLOR_ON);
       }
       y_pos += 26;
@@ -354,6 +422,12 @@ display:
         it.print(dest_x, y_pos, id(font_normal), COLOR_ON, TextAlign::CENTER_LEFT, dest.c_str());
         
         it.print(it.get_width() - 5, y_pos, id(font_time), COLOR_ON, TextAlign::CENTER_RIGHT, minutes_text.c_str());
+        
+        // Check if delayed and add vertical line on right side
+        if (id(departure_3_is_delayed).has_state() && id(departure_3_is_delayed).state == "on") {
+          it.line(it.get_width() - 2, y_pos - 8, it.get_width() - 2, y_pos + 6, COLOR_ON);
+        }
+        
         it.line(0, y_pos + 14, it.get_width(), y_pos + 14, COLOR_ON);
       }
       y_pos += 26;
@@ -382,6 +456,12 @@ display:
         it.print(dest_x, y_pos, id(font_normal), COLOR_ON, TextAlign::CENTER_LEFT, dest.c_str());
         
         it.print(it.get_width() - 5, y_pos, id(font_time), COLOR_ON, TextAlign::CENTER_RIGHT, minutes_text.c_str());
+        
+        // Check if delayed and add vertical line on right side
+        if (id(departure_4_is_delayed).has_state() && id(departure_4_is_delayed).state == "on") {
+          it.line(it.get_width() - 2, y_pos - 8, it.get_width() - 2, y_pos + 6, COLOR_ON);
+        }
+        
         it.line(0, y_pos + 14, it.get_width(), y_pos + 14, COLOR_ON);
       }
       y_pos += 26;
@@ -410,6 +490,12 @@ display:
         it.print(dest_x, y_pos, id(font_normal), COLOR_ON, TextAlign::CENTER_LEFT, dest.c_str());
         
         it.print(it.get_width() - 5, y_pos, id(font_time), COLOR_ON, TextAlign::CENTER_RIGHT, minutes_text.c_str());
+        
+        // Check if delayed and add vertical line on right side
+        if (id(departure_5_is_delayed).has_state() && id(departure_5_is_delayed).state == "on") {
+          it.line(it.get_width() - 2, y_pos - 8, it.get_width() - 2, y_pos + 6, COLOR_ON);
+        }
+        
         it.line(0, y_pos + 14, it.get_width(), y_pos + 14, COLOR_ON);
       }
       y_pos += 26;
@@ -438,6 +524,12 @@ display:
         it.print(dest_x, y_pos, id(font_normal), COLOR_ON, TextAlign::CENTER_LEFT, dest.c_str());
         
         it.print(it.get_width() - 5, y_pos, id(font_time), COLOR_ON, TextAlign::CENTER_RIGHT, minutes_text.c_str());
+        
+        // Check if delayed and add vertical line on right side
+        if (id(departure_6_is_delayed).has_state() && id(departure_6_is_delayed).state == "on") {
+          it.line(it.get_width() - 2, y_pos - 8, it.get_width() - 2, y_pos + 6, COLOR_ON);
+        }
+        
         it.line(0, y_pos + 14, it.get_width(), y_pos + 14, COLOR_ON);
       }
       y_pos += 26;
@@ -466,6 +558,12 @@ display:
         it.print(dest_x, y_pos, id(font_normal), COLOR_ON, TextAlign::CENTER_LEFT, dest.c_str());
         
         it.print(it.get_width() - 5, y_pos, id(font_time), COLOR_ON, TextAlign::CENTER_RIGHT, minutes_text.c_str());
+        
+        // Check if delayed and add vertical line on right side
+        if (id(departure_7_is_delayed).has_state() && id(departure_7_is_delayed).state == "on") {
+          it.line(it.get_width() - 2, y_pos - 8, it.get_width() - 2, y_pos + 6, COLOR_ON);
+        }
+        
         it.line(0, y_pos + 14, it.get_width(), y_pos + 14, COLOR_ON);
       }
       
