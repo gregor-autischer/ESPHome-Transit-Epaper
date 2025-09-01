@@ -1,0 +1,474 @@
+esphome:
+  name: transit-display
+
+esp32:
+  board: esp32dev
+
+wifi:
+  ssid: "INSERT_HERE"
+  password: "INSERT_HERE"
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API (optional, can be removed if not using HA)
+api:
+  id: hass_api
+  password: "nkih3icshk498bksfizu"
+
+ota:
+  platform: esphome
+  password: "e435lnoubas459bsg7"
+
+# Define the SPI pins
+spi:
+  clk_pin: GPIO18
+  mosi_pin: GPIO23
+
+# Define fonts for departure board
+font:
+  - file: 
+      type: gfonts
+      family: Roboto
+      weight: 700
+    id: font_header
+    size: 14
+  - file: 
+      type: gfonts
+      family: Roboto
+      weight: 400
+    id: font_normal
+    size: 12
+  - file: 
+      type: gfonts
+      family: Roboto Mono
+      weight: 700
+    id: font_time
+    size: 16
+  - file: 
+      type: gfonts
+      family: Roboto
+      weight: 800
+    id: font_line_number
+    size: 13
+
+# Time component for displaying current time
+time:
+  - platform: sntp
+    id: sntp_time
+    timezone: "America/New_York"
+
+# Sensor for uptime
+sensor:
+  - platform: uptime
+    name: "Uptime"
+    id: uptime_sensor
+    update_interval: 60s
+
+  - platform: wifi_signal
+    name: "WiFi Signal"
+    id: wifi_signal_sensor
+    update_interval: 60s
+
+# Text sensors for transit data
+text_sensor:
+  # Departure 1 - minutes and separate line/destination sensors
+  - platform: homeassistant
+    id: departure_1_minutes
+    entity_id: sensor.transit_departure_1
+    on_value:
+      then:
+        - component.update: epaper_display
+
+  - platform: homeassistant
+    id: departure_1_line
+    entity_id: sensor.transit_departure_1
+    attribute: line
+    on_value:
+      then:
+        - logger.log:
+            format: "Departure 1 Line received: %s"
+            args: ['x.c_str()']
+        - component.update: epaper_display
+
+  - platform: homeassistant
+    id: departure_1_destination
+    entity_id: sensor.transit_departure_1
+    attribute: destination
+    on_value:
+      then:
+        - logger.log:
+            format: "Departure 1 Destination received: %s"
+            args: ['x.c_str()']
+        - component.update: epaper_display
+
+  # Departure 2 - minutes and separate line/destination sensors
+  - platform: homeassistant
+    id: departure_2_minutes
+    entity_id: sensor.transit_departure_2
+    on_value:
+      then:
+        - component.update: epaper_display
+
+  - platform: homeassistant
+    id: departure_2_line
+    entity_id: sensor.transit_departure_2
+    attribute: line
+    on_value:
+      then:
+        - logger.log:
+            format: "Departure 2 Line received: %s"
+            args: ['x.c_str()']
+        - component.update: epaper_display
+
+  - platform: homeassistant
+    id: departure_2_destination
+    entity_id: sensor.transit_departure_2
+    attribute: destination
+    on_value:
+      then:
+        - logger.log:
+            format: "Departure 2 Destination received: %s"
+            args: ['x.c_str()']
+        - component.update: epaper_display
+
+  # Departure 3 - minutes and attributes
+  - platform: homeassistant
+    id: departure_3_minutes
+    entity_id: sensor.transit_departure_3
+    on_value:
+      then:
+        - component.update: epaper_display
+
+  - platform: homeassistant
+    id: departure_3_line
+    entity_id: sensor.transit_departure_3
+    attribute: line
+    on_value:
+      then:
+        - component.update: epaper_display
+
+  - platform: homeassistant
+    id: departure_3_destination
+    entity_id: sensor.transit_departure_3
+    attribute: destination
+    on_value:
+      then:
+        - component.update: epaper_display
+
+  # Departure 4 - minutes and attributes
+  - platform: homeassistant
+    id: departure_4_minutes
+    entity_id: sensor.transit_departure_4
+    on_value:
+      then:
+        - component.update: epaper_display
+
+  - platform: homeassistant
+    id: departure_4_line
+    entity_id: sensor.transit_departure_4
+    attribute: line
+    on_value:
+      then:
+        - component.update: epaper_display
+
+  - platform: homeassistant
+    id: departure_4_destination
+    entity_id: sensor.transit_departure_4
+    attribute: destination
+    on_value:
+      then:
+        - component.update: epaper_display
+
+  # Departure 5 - minutes and attributes
+  - platform: homeassistant
+    id: departure_5_minutes
+    entity_id: sensor.transit_departure_5
+    on_value:
+      then:
+        - component.update: epaper_display
+
+  - platform: homeassistant
+    id: departure_5_line
+    entity_id: sensor.transit_departure_5
+    attribute: line
+    on_value:
+      then:
+        - component.update: epaper_display
+
+  - platform: homeassistant
+    id: departure_5_destination
+    entity_id: sensor.transit_departure_5
+    attribute: destination
+    on_value:
+      then:
+        - component.update: epaper_display
+
+  # Departure 6 - minutes and attributes
+  - platform: homeassistant
+    id: departure_6_minutes
+    entity_id: sensor.transit_departure_6
+    on_value:
+      then:
+        - component.update: epaper_display
+
+  - platform: homeassistant
+    id: departure_6_line
+    entity_id: sensor.transit_departure_6
+    attribute: line
+    on_value:
+      then:
+        - component.update: epaper_display
+
+  - platform: homeassistant
+    id: departure_6_destination
+    entity_id: sensor.transit_departure_6
+    attribute: destination
+    on_value:
+      then:
+        - component.update: epaper_display
+
+  # Departure 7 - minutes and attributes
+  - platform: homeassistant
+    id: departure_7_minutes
+    entity_id: sensor.transit_departure_7
+    on_value:
+      then:
+        - component.update: epaper_display
+
+  - platform: homeassistant
+    id: departure_7_line
+    entity_id: sensor.transit_departure_7
+    attribute: line
+    on_value:
+      then:
+        - component.update: epaper_display
+
+  - platform: homeassistant
+    id: departure_7_destination
+    entity_id: sensor.transit_departure_7
+    attribute: destination
+    on_value:
+      then:
+        - component.update: epaper_display
+
+# Display configuration
+display:
+  - platform: waveshare_epaper
+    id: epaper_display
+    model: 2.90inv2-r2
+    cs_pin: GPIO21
+    dc_pin: GPIO17
+    reset_pin: GPIO16
+    busy_pin: GPIO4
+    rotation: 0
+    update_interval: 30s
+    lambda: |-
+      // Clear display - white background
+      it.fill(COLOR_OFF);
+      
+      int y_pos = 15;
+      
+      // Departure 1
+      if (id(departure_1_minutes).has_state()) {
+        auto minutes_text = id(departure_1_minutes).state;
+        std::string line = (id(departure_1_line).has_state()) ? id(departure_1_line).state : "XX";
+        std::string dest = (id(departure_1_destination).has_state()) ? id(departure_1_destination).state : "xx";
+        
+        // Special case: Hauptbahnhof -> Hauptbhf.
+        if (dest == "Hauptbahnhof") {
+          dest = "Hauptbhf.";
+        }
+        // Truncate destination if longer than 12 chars
+        else if (dest.length() > 12) {
+          dest = dest.substr(0, 11) + ".";
+        }
+        
+        // Determine line box width (single digit: 20px, double digit: 20px, with slash: 24px)
+        int box_width = (line.find('/') != std::string::npos) ? 24 : 20;
+        int text_x = box_width == 24 ? 12 : 10;
+        int dest_x = box_width + 5;
+        
+        it.filled_rectangle(0, y_pos - 8, box_width, 16, COLOR_ON);
+        it.print(text_x, y_pos, id(font_line_number), COLOR_OFF, TextAlign::CENTER, line.c_str());
+        it.print(dest_x, y_pos, id(font_normal), COLOR_ON, TextAlign::CENTER_LEFT, dest.c_str());
+        
+        // Use minutes text as-is (includes !, *, etc)
+        it.print(it.get_width() - 5, y_pos, id(font_time), COLOR_ON, TextAlign::CENTER_RIGHT, minutes_text.c_str());
+        it.line(0, y_pos + 14, it.get_width(), y_pos + 14, COLOR_ON);
+      }
+      y_pos += 26;
+      
+      // Departure 2
+      if (id(departure_2_minutes).has_state()) {
+        auto minutes_text = id(departure_2_minutes).state;
+        std::string line = (id(departure_2_line).has_state()) ? id(departure_2_line).state : "XX";
+        std::string dest = (id(departure_2_destination).has_state()) ? id(departure_2_destination).state : "xx";
+        
+        // Special case: Hauptbahnhof -> Hauptbhf.
+        if (dest == "Hauptbahnhof") {
+          dest = "Hauptbhf.";
+        }
+        // Truncate destination if longer than 12 chars
+        else if (dest.length() > 12) {
+          dest = dest.substr(0, 11) + ".";
+        }
+        
+        int box_width = (line.find('/') != std::string::npos) ? 24 : 20;
+        int text_x = box_width == 24 ? 12 : 10;
+        int dest_x = box_width + 5;
+        
+        it.filled_rectangle(0, y_pos - 8, box_width, 16, COLOR_ON);
+        it.print(text_x, y_pos, id(font_line_number), COLOR_OFF, TextAlign::CENTER, line.c_str());
+        it.print(dest_x, y_pos, id(font_normal), COLOR_ON, TextAlign::CENTER_LEFT, dest.c_str());
+        
+        // Use minutes text as-is (includes !, *, etc)
+        it.print(it.get_width() - 5, y_pos, id(font_time), COLOR_ON, TextAlign::CENTER_RIGHT, minutes_text.c_str());
+        it.line(0, y_pos + 14, it.get_width(), y_pos + 14, COLOR_ON);
+      }
+      y_pos += 26;
+      
+      // Departure 3
+      if (id(departure_3_minutes).has_state()) {
+        auto minutes_text = id(departure_3_minutes).state;
+        std::string line = (id(departure_3_line).has_state()) ? id(departure_3_line).state : "XX";
+        std::string dest = (id(departure_3_destination).has_state()) ? id(departure_3_destination).state : "xx";
+        
+        // Special case: Hauptbahnhof -> Hauptbhf.
+        if (dest == "Hauptbahnhof") {
+          dest = "Hauptbhf.";
+        }
+        // Truncate destination if longer than 12 chars
+        else if (dest.length() > 12) {
+          dest = dest.substr(0, 11) + ".";
+        }
+        
+        int box_width = (line.find('/') != std::string::npos) ? 24 : 20;
+        int text_x = box_width == 24 ? 12 : 10;
+        int dest_x = box_width + 5;
+        
+        it.filled_rectangle(0, y_pos - 8, box_width, 16, COLOR_ON);
+        it.print(text_x, y_pos, id(font_line_number), COLOR_OFF, TextAlign::CENTER, line.c_str());
+        it.print(dest_x, y_pos, id(font_normal), COLOR_ON, TextAlign::CENTER_LEFT, dest.c_str());
+        
+        it.print(it.get_width() - 5, y_pos, id(font_time), COLOR_ON, TextAlign::CENTER_RIGHT, minutes_text.c_str());
+        it.line(0, y_pos + 14, it.get_width(), y_pos + 14, COLOR_ON);
+      }
+      y_pos += 26;
+      
+      // Departure 4
+      if (id(departure_4_minutes).has_state()) {
+        auto minutes_text = id(departure_4_minutes).state;
+        std::string line = (id(departure_4_line).has_state()) ? id(departure_4_line).state : "XX";
+        std::string dest = (id(departure_4_destination).has_state()) ? id(departure_4_destination).state : "xx";
+        
+        // Special case: Hauptbahnhof -> Hauptbhf.
+        if (dest == "Hauptbahnhof") {
+          dest = "Hauptbhf.";
+        }
+        // Truncate destination if longer than 12 chars
+        else if (dest.length() > 12) {
+          dest = dest.substr(0, 11) + ".";
+        }
+        
+        int box_width = (line.find('/') != std::string::npos) ? 24 : 20;
+        int text_x = box_width == 24 ? 12 : 10;
+        int dest_x = box_width + 5;
+        
+        it.filled_rectangle(0, y_pos - 8, box_width, 16, COLOR_ON);
+        it.print(text_x, y_pos, id(font_line_number), COLOR_OFF, TextAlign::CENTER, line.c_str());
+        it.print(dest_x, y_pos, id(font_normal), COLOR_ON, TextAlign::CENTER_LEFT, dest.c_str());
+        
+        it.print(it.get_width() - 5, y_pos, id(font_time), COLOR_ON, TextAlign::CENTER_RIGHT, minutes_text.c_str());
+        it.line(0, y_pos + 14, it.get_width(), y_pos + 14, COLOR_ON);
+      }
+      y_pos += 26;
+      
+      // Departure 5
+      if (id(departure_5_minutes).has_state()) {
+        auto minutes_text = id(departure_5_minutes).state;
+        std::string line = (id(departure_5_line).has_state()) ? id(departure_5_line).state : "XX";
+        std::string dest = (id(departure_5_destination).has_state()) ? id(departure_5_destination).state : "xx";
+        
+        // Special case: Hauptbahnhof -> Hauptbhf.
+        if (dest == "Hauptbahnhof") {
+          dest = "Hauptbhf.";
+        }
+        // Truncate destination if longer than 12 chars
+        else if (dest.length() > 12) {
+          dest = dest.substr(0, 11) + ".";
+        }
+        
+        int box_width = (line.find('/') != std::string::npos) ? 24 : 20;
+        int text_x = box_width == 24 ? 12 : 10;
+        int dest_x = box_width + 5;
+        
+        it.filled_rectangle(0, y_pos - 8, box_width, 16, COLOR_ON);
+        it.print(text_x, y_pos, id(font_line_number), COLOR_OFF, TextAlign::CENTER, line.c_str());
+        it.print(dest_x, y_pos, id(font_normal), COLOR_ON, TextAlign::CENTER_LEFT, dest.c_str());
+        
+        it.print(it.get_width() - 5, y_pos, id(font_time), COLOR_ON, TextAlign::CENTER_RIGHT, minutes_text.c_str());
+        it.line(0, y_pos + 14, it.get_width(), y_pos + 14, COLOR_ON);
+      }
+      y_pos += 26;
+      
+      // Departure 6
+      if (id(departure_6_minutes).has_state()) {
+        auto minutes_text = id(departure_6_minutes).state;
+        std::string line = (id(departure_6_line).has_state()) ? id(departure_6_line).state : "XX";
+        std::string dest = (id(departure_6_destination).has_state()) ? id(departure_6_destination).state : "xx";
+        
+        // Special case: Hauptbahnhof -> Hauptbhf.
+        if (dest == "Hauptbahnhof") {
+          dest = "Hauptbhf.";
+        }
+        // Truncate destination if longer than 12 chars
+        else if (dest.length() > 12) {
+          dest = dest.substr(0, 11) + ".";
+        }
+        
+        int box_width = (line.find('/') != std::string::npos) ? 24 : 20;
+        int text_x = box_width == 24 ? 12 : 10;
+        int dest_x = box_width + 5;
+        
+        it.filled_rectangle(0, y_pos - 8, box_width, 16, COLOR_ON);
+        it.print(text_x, y_pos, id(font_line_number), COLOR_OFF, TextAlign::CENTER, line.c_str());
+        it.print(dest_x, y_pos, id(font_normal), COLOR_ON, TextAlign::CENTER_LEFT, dest.c_str());
+        
+        it.print(it.get_width() - 5, y_pos, id(font_time), COLOR_ON, TextAlign::CENTER_RIGHT, minutes_text.c_str());
+        it.line(0, y_pos + 14, it.get_width(), y_pos + 14, COLOR_ON);
+      }
+      y_pos += 26;
+      
+      // Departure 7
+      if (id(departure_7_minutes).has_state()) {
+        auto minutes_text = id(departure_7_minutes).state;
+        std::string line = (id(departure_7_line).has_state()) ? id(departure_7_line).state : "XX";
+        std::string dest = (id(departure_7_destination).has_state()) ? id(departure_7_destination).state : "xx";
+        
+        // Special case: Hauptbahnhof -> Hauptbhf.
+        if (dest == "Hauptbahnhof") {
+          dest = "Hauptbhf.";
+        }
+        // Truncate destination if longer than 12 chars
+        else if (dest.length() > 12) {
+          dest = dest.substr(0, 11) + ".";
+        }
+        
+        int box_width = (line.find('/') != std::string::npos) ? 24 : 20;
+        int text_x = box_width == 24 ? 12 : 10;
+        int dest_x = box_width + 5;
+        
+        it.filled_rectangle(0, y_pos - 8, box_width, 16, COLOR_ON);
+        it.print(text_x, y_pos, id(font_line_number), COLOR_OFF, TextAlign::CENTER, line.c_str());
+        it.print(dest_x, y_pos, id(font_normal), COLOR_ON, TextAlign::CENTER_LEFT, dest.c_str());
+        
+        it.print(it.get_width() - 5, y_pos, id(font_time), COLOR_ON, TextAlign::CENTER_RIGHT, minutes_text.c_str());
+        it.line(0, y_pos + 14, it.get_width(), y_pos + 14, COLOR_ON);
+      }
+      
+      // Draw only top and bottom borders (no left/right)
+      it.line(0, 0, it.get_width(), 0, COLOR_ON); // Top border
+      it.line(0, it.get_height()-1, it.get_width(), it.get_height()-1, COLOR_ON); // Bottom border

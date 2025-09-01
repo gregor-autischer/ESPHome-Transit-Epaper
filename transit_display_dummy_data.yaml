@@ -1,0 +1,150 @@
+esphome:
+  name: transit-display
+
+esp32:
+  board: esp32dev
+
+wifi:
+  ssid: "INSERT_HERE"
+  password: "INSERT_HERE"
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API (optional, can be removed if not using HA)
+api:
+  password: "nkih3icshk498bksfizu"
+
+ota:
+  platform: esphome
+  password: "e435lnoubas459bsg7"
+
+# Define the SPI pins
+spi:
+  clk_pin: GPIO18
+  mosi_pin: GPIO23
+
+# Define fonts for departure board
+font:
+  - file: 
+      type: gfonts
+      family: Roboto
+      weight: 700
+    id: font_header
+    size: 14
+  - file: 
+      type: gfonts
+      family: Roboto
+      weight: 400
+    id: font_normal
+    size: 12
+  - file: 
+      type: gfonts
+      family: Roboto Mono
+      weight: 700
+    id: font_time
+    size: 16
+  - file: 
+      type: gfonts
+      family: Roboto
+      weight: 800
+    id: font_line_number
+    size: 13
+
+# Time component for displaying current time
+time:
+  - platform: sntp
+    id: sntp_time
+    timezone: "America/New_York"
+
+# Sensor for uptime
+sensor:
+  - platform: uptime
+    name: "Uptime"
+    id: uptime_sensor
+    update_interval: 60s
+
+  - platform: wifi_signal
+    name: "WiFi Signal"
+    id: wifi_signal_sensor
+    update_interval: 60s
+
+# Display configuration
+display:
+  - platform: waveshare_epaper
+    model: 2.90inv2-r2
+    cs_pin: GPIO21
+    dc_pin: GPIO17
+    reset_pin: GPIO16
+    busy_pin: GPIO4
+    rotation: 0
+    update_interval: 30s
+    lambda: |-
+      // Clear display - white background
+      it.fill(COLOR_OFF);
+      
+      // First departure - Line 64 to St. Leonhard (12 chars - single line)
+      int y_pos = 15;
+      // Line number in black rectangle at leftmost position (weight 800, size 13)
+      it.filled_rectangle(0, y_pos - 8, 20, 16, COLOR_ON);
+      it.print(10, y_pos, id(font_line_number), COLOR_OFF, TextAlign::CENTER, "64");
+      // Destination (12 chars - single line)
+      it.print(25, y_pos, id(font_normal), COLOR_ON, TextAlign::CENTER_LEFT, "St. Leonhard");
+      // Minutes (same line, far right)
+      it.print(it.get_width() - 5, y_pos, id(font_time), COLOR_ON, TextAlign::CENTER_RIGHT, "2");
+      // Separator line
+      it.line(0, y_pos + 14, it.get_width(), y_pos + 14, COLOR_ON);
+      
+      // Second departure - Line 63 to Merangasse (10 chars - single line)
+      y_pos += 26;
+      // Line number in black rectangle at leftmost position (weight 800, size 13)
+      it.filled_rectangle(0, y_pos - 8, 20, 16, COLOR_ON);
+      it.print(10, y_pos, id(font_line_number), COLOR_OFF, TextAlign::CENTER, "63");
+      // Destination (10 chars - single line)
+      it.print(25, y_pos, id(font_normal), COLOR_ON, TextAlign::CENTER_LEFT, "Merangasse");
+      // Minutes (same line, far right)
+      it.print(it.get_width() - 5, y_pos, id(font_time), COLOR_ON, TextAlign::CENTER_RIGHT, "5");
+      // Separator line
+      it.line(0, y_pos + 14, it.get_width(), y_pos + 14, COLOR_ON);
+      
+      // Third departure - Line 64 to St. Leonhard (12 chars - single line)
+      y_pos += 26;
+      // Line number in black rectangle at leftmost position (weight 800, size 13)
+      it.filled_rectangle(0, y_pos - 8, 20, 16, COLOR_ON);
+      it.print(10, y_pos, id(font_line_number), COLOR_OFF, TextAlign::CENTER, "64");
+      // Destination (12 chars - single line)
+      it.print(25, y_pos, id(font_normal), COLOR_ON, TextAlign::CENTER_LEFT, "St. Leonhard");
+      // Minutes (same line, far right)
+      it.print(it.get_width() - 5, y_pos, id(font_time), COLOR_ON, TextAlign::CENTER_RIGHT, "9");
+      // Separator line
+      it.line(0, y_pos + 14, it.get_width(), y_pos + 14, COLOR_ON);
+      
+      // Fourth departure - Line 64 to Merangasse (10 chars - single line)
+      y_pos += 26;
+      // Line number in black rectangle at leftmost position (weight 800, size 13)
+      it.filled_rectangle(0, y_pos - 8, 20, 16, COLOR_ON);
+      it.print(10, y_pos, id(font_line_number), COLOR_OFF, TextAlign::CENTER, "64");
+      // Destination (10 chars - single line)
+      it.print(25, y_pos, id(font_normal), COLOR_ON, TextAlign::CENTER_LEFT, "Merangasse");
+      // Minutes (same line, far right)
+      it.print(it.get_width() - 5, y_pos, id(font_time), COLOR_ON, TextAlign::CENTER_RIGHT, "14");
+      // Separator line
+      it.line(0, y_pos + 14, it.get_width(), y_pos + 14, COLOR_ON);
+      
+      // Fifth departure - Line 5/6 to Jakominip. (10 chars - single line)
+      y_pos += 26;
+      // Line number in black rectangle at leftmost position (weight 800, size 13) - wider for 3 chars
+      it.filled_rectangle(0, y_pos - 8, 24, 16, COLOR_ON);
+      it.print(12, y_pos, id(font_line_number), COLOR_OFF, TextAlign::CENTER, "XX");
+      // Destination (10 chars - single line)
+      it.print(29, y_pos, id(font_normal), COLOR_ON, TextAlign::CENTER_LEFT, "Jakominip.");
+      // Minutes (same line, far right)
+      it.print(it.get_width() - 5, y_pos, id(font_time), COLOR_ON, TextAlign::CENTER_RIGHT, "21");
+      // Separator line
+      it.line(0, y_pos + 14, it.get_width(), y_pos + 14, COLOR_ON);
+      
+      // Draw only top and bottom borders (no left/right)
+      it.line(0, 0, it.get_width(), 0, COLOR_ON); // Top border
+      it.line(0, it.get_height()-1, it.get_width(), it.get_height()-1, COLOR_ON); // Bottom border
