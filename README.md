@@ -9,7 +9,7 @@ This project creates a transit departure board similar to those found at bus/tra
 - Destination names
 - Minutes until departure
 
-![ESPHome Transit Display](showcase_img.png)
+<img src="showcase_img.png" alt="ESPHome Transit Display" width="50%">
 
 The display updates every minute and uses an e-paper display for low power consumption and excellent readability.
 
