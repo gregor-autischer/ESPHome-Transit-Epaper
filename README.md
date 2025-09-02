@@ -9,13 +9,12 @@ This project creates a transit departure board similar to those found at bus/tra
 - Destination names
 - Minutes until departure
 
-The display updates every 30 seconds and uses an e-paper display for low power consumption and excellent readability.
+The display updates every minute and uses an e-paper display for low power consumption and excellent readability.
 
 ## 🛠 Hardware Requirements
 
 - **ESP32 Development Board**
 - **Waveshare 2.9" E-Paper Display** (Model: 2.90inv2-r2)
-- **Jumper wires** for connections
 - **USB cable** for programming and power
 
 ### Pinout Configuration
@@ -65,7 +64,15 @@ wifi:
 
 ### Home Assistant Integration
 
-The dynamic version requires Home Assistant entities with the following structure:
+#### 🚌 Live Transit Data for Steiermark, Austria
+
+For **plug-and-play** live departure data in the region of Steiermark (Austria), use the companion HACS integration:
+
+**[PH_Steiermark_Oeffi](https://github.com/gregor-autischer/PH_Steiermark_Oeffi)** - A Home Assistant integration that provides real-time public transit departure data with the exact entities required by this display. Simply install via HACS, configure your stops, and the display will automatically show live departures!
+
+#### Manual Entity Configuration
+
+If setting up entities manually, the dynamic version requires Home Assistant entities with the following structure:
 
 **Required entities:**
 - `sensor.transit_departure_1` to `sensor.transit_departure_7` (minutes with indicators like "3!", "15*")
@@ -168,8 +175,8 @@ For development and testing without Home Assistant, use `transit_display_dummy_d
 - **Automatic text truncation** (destinations >12 chars → 11 chars + ".")
 - **Special abbreviations**: "Hauptbahnhof" → "Hauptbhf."
 - **Status indicators**: 
-  - `!` = Delayed departure
-  - `*` = Scheduled departure
+  - solid line = Delayed departure
+  - dashed line = Scheduled departure
 - **Fallback display**: Shows "XX"/"xx" when data unavailable
 
 ### 📊 Display Format
@@ -177,8 +184,8 @@ For development and testing without Home Assistant, use `transit_display_dummy_d
 Each departure shows:
 ```
 [LINE]  Destination Name    MIN
- 64     St. Leonhard        3!
- 5/6    Hauptbhf.          15*
+ 64     St. Leonhard         3
+ 5/6    Hauptbhf.           15
  63     Jakominipla.        21
 ```
 
@@ -187,7 +194,6 @@ Each departure shows:
 1. **Home Assistant** provides transit entities with attributes
 2. **ESPHome** reads entity states and attributes via API
 3. **Display updates** automatically when data changes
-4. **Graceful handling** of missing or invalid data
 
 ### Font Configuration
 
@@ -222,7 +228,7 @@ The display uses Google Fonts (Roboto family):
 ### Display Not Updating
 
 1. Check wiring connections
-2. Verify power supply (3.3V, not 5V)
+2. Verify power supply (3.3V,)
 3. Check BUSY pin - display won't update if stuck busy
 4. Try increasing update interval if refreshing too frequently
 
@@ -231,15 +237,6 @@ The display uses Google Fonts (Roboto family):
 1. Verify SSID and password (case-sensitive)
 2. Ensure 2.4GHz network (ESP32 doesn't support 5GHz)
 3. Check router allows new device connections
-4. Use fallback AP mode if WiFi fails:
-   ```yaml
-   wifi:
-     ssid: "YourWiFiSSID"
-     password: "YourWiFiPassword"
-     ap:
-       ssid: "ESPHome-Fallback"
-       password: "fallback123"
-   ```
 
 ## 📊 Project Status
 
@@ -254,21 +251,10 @@ The display uses Google Fonts (Roboto family):
 - ✅ **7 departure display** with proper spacing
 
 ### Technical Details
-- **Update frequency**: 30 seconds (configurable)
+- **Update frequency**: automatically on entity change
 - **Display technology**: E-ink for low power consumption
 - **Communication**: ESPHome API with Home Assistant
-- **Data validation**: Handles missing entities gracefully
 - **Text processing**: Automatic truncation and special cases
-
-## 🔄 Future Enhancements
-
-- [ ] Add weather information display
-- [ ] Implement multiple pages/views
-- [ ] Create web interface for configuration
-- [ ] Add battery operation support
-- [ ] Implement deep sleep for power saving
-- [ ] Add arrival/departure toggle
-- [ ] Multi-language support
 
 ## 📄 License
 
@@ -280,4 +266,4 @@ Feel free to submit issues and enhancement requests!
 
 ---
 
-*Last updated: August 2025*
+*Last updated: September 2025*
