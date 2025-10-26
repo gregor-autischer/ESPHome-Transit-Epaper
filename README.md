@@ -70,8 +70,6 @@ wifi:
   password: "YourWiFiPassword"  # Replace with your actual WiFi password
 ```
 
-**Security Note**: Never commit your actual WiFi credentials to version control. Consider using environment variables or ESPHome secrets for sensitive data.
-
 ### Home Assistant Integration
 
 #### 🚌 Live Transit Data for Steiermark, Austria
@@ -278,3 +276,4 @@ Feel free to submit issues and enhancement requests!
 
 
 *Last updated: September 2025*
+
