@@ -32,6 +32,14 @@ The display updates every minute and uses an e-paper display for low power consu
 | RST | GPIO16 | Reset |
 | BUSY | GPIO4 | Busy signal |
 
+## 3D Printed Housing
+
+A custom multi-part housing for this project is available on Printables:
+
+🖨️ **[Download 3D files on Printables](https://www.printables.com/model/1459641-esphome-transit-e-paper-display-housing-multi-part)**
+
+The housing is designed to fit the ESP32 and e-paper display perfectly. **Important:** Print with a 0.25mm nozzle for proper fit. Parts need to be glued together with super glue.
+
 ## 📁 Project Files
 
 - **`transit_display_live.yaml`** - **PRODUCTION VERSION** - Dynamic transit display with real-time Home Assistant integration
@@ -267,5 +275,6 @@ This project uses ESPHome, which is licensed under the MIT License.
 Feel free to submit issues and enhancement requests!
 
 ---
+
 
 *Last updated: September 2025*
