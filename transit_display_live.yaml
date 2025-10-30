@@ -1,5 +1,5 @@
 esphome:
-  name: oeffi-epaper-anzeige
+  name: oeffi-epaper-stand
 
 esp32:
   board: esp32dev
