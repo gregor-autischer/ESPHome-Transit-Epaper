@@ -1,5 +1,5 @@
 esphome:
-  name: transit-display
+  name: oeffi-epaper-anzeige
 
 esp32:
   board: esp32dev
@@ -13,14 +13,14 @@ captive_portal:
 # Enable logging
 logger:
 
-# Enable Home Assistant API (optional, can be removed if not using HA)
+# Enable Home Assistant API
 api:
   id: hass_api
-  password: "nkih3icshk498bksfizu"
+  password: "nkih3icshk498bksfizu" # change to your own secure password
 
 ota:
   platform: esphome
-  password: "e435lnoubas459bsg7"
+  password: "e435lnoubas459bsg7" # change to your own secure password
 
 # Define the SPI pins
 spi:
